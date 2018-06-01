@@ -11,12 +11,18 @@ defmodule CloudfrontSigner.Signature do
   """
   @spec signature(Policy.t, tuple) :: binary
   def signature(%Policy{} = policy, private_key) do
-    :crypto.hash(:sha, Policy.to_string(policy))
+    :crypto.hash(:sha, to_string(policy))
     |> :public_key.encrypt_private(private_key)
     |> String.replace(@whitespace, "")
     |> Base.encode64()
-    |> String.replace("+", "-")
-    |> String.replace("=", "_")
-    |> String.replace("/", "~")
+    |> String.to_charlist()
+    |> Enum.map(&replace/1)
+    |> to_string()
   end
+
+  @compile {:inline, replace: 1}
+  defp replace(?+), do: ?-
+  defp replace(?=), do: ?_
+  defp replace(?/), do: ?~
+  defp replace(c), do: c
 end
