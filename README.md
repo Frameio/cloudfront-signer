@@ -1,6 +1,7 @@
 # CloudfrontSigner
 
-**TODO: Add description**
+Elixir implementation of Cloudfront's url signature algorithm.  Supports expiration policies and
+runtime configurable distributions. 
 
 ## Installation
 
@@ -15,7 +16,17 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/cloudfront_signer](https://hexdocs.pm/cloudfront_signer).
+Configure a distribution with:
 
+```elixir
+config :my_app, :my_distribution,
+  address: "https://some.cloudfront.domain",
+  private_key: {:system, "ENV_VAR"}, # or {:file, "/path/to/key"}
+  private_key_id: {:system, "OTHER_ENV_VAR"}
+```
+
+Then simply do:
+```elixir
+CloudfrontSigner.Distribution.from_config(:my_app, :my_distribution)
+|> CloudfrontSigner.sign(path, [arg: "value"], expiry_in_seconds)
+```
