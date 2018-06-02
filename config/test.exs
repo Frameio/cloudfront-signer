@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :cloudfront_signer, CloudfrontSignerTest,
-  address: "https://somewhere.cloudfront.com",
+  domain: "https://somewhere.cloudfront.com",
   key_pair_id: "a_key_pair",
   private_key: """
 -----BEGIN RSA PRIVATE KEY-----
