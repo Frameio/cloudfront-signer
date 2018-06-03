@@ -1,5 +1,5 @@
 defmodule CloudfrontSigner.SignatureTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @correct_signature """
 ToshDrR-FhIhiStqrp8kAEyQ3YGsz-P5Nh9~~lu0m5l4V-qg3K9Pp~pjYCIYR4yC
