@@ -20,7 +20,7 @@ Configure a distribution with:
 
 ```elixir
 config :my_app, :my_distribution,
-  address: "https://some.cloudfront.domain",
+  domain: "https://some.cloudfront.domain",
   private_key: {:system, "ENV_VAR"}, # or {:file, "/path/to/key"}
   private_key_id: {:system, "OTHER_ENV_VAR"}
 ```
@@ -29,4 +29,11 @@ Then simply do:
 ```elixir
 CloudfrontSigner.Distribution.from_config(:my_app, :my_distribution)
 |> CloudfrontSigner.sign(path, [arg: "value"], expiry_in_seconds)
+```
+
+If you want to cache pem decodes (which is a wise choice), a registry of decoded distributions is available.  Simply do:
+
+```elixir
+CloudfrontSigner.DistributionRegistry.get_distribution(:my_app, :my_distribution)
+|> CloudfrontSigner.sign(path, [arg: "value], expiry)
 ```
