@@ -22,7 +22,7 @@ Configure a distribution with:
 config :my_app, :my_distribution,
   domain: "https://some.cloudfront.domain",
   private_key: {:system, "ENV_VAR"}, # or {:file, "/path/to/key"}
-  private_key_id: {:system, "OTHER_ENV_VAR"}
+  key_pair_id: {:system, "OTHER_ENV_VAR"}
 ```
 
 Then simply do:
