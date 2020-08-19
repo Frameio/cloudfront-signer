@@ -4,6 +4,8 @@ defmodule CloudfrontSigner.Policy do
   """
   defstruct [:resource, :expiry]
 
+  import Jason.Helpers
+
   @type t :: %__MODULE__{}
 
   defimpl String.Chars, for: CloudfrontSigner.Policy do
@@ -11,23 +13,16 @@ defmodule CloudfrontSigner.Policy do
     json encodes a policy
     """
     def to_string(%{resource: resource, expiry: expiry}) do
-      aws_policy(resource, expiry)
-      |> Poison.encode!()
-    end
-
-    defp aws_policy(resource, expiry) do
-      %{
-        Statement: [
-          %{
-            Resource: resource, 
-            Condition: %{
-              DateLessThan: %{
-                "AWS:EpochTime": expiry
-              }
-            }
-          }
-        ]
-      }
+      Jason.encode!(
+        json_map(
+          Statement: [
+            json_map(
+              Resource: resource,
+              Condition: json_map(DateLessThan: json_map("AWS:EpochTime": expiry))
+            )
+          ]
+        )
+      )
     end
   end
 end
