@@ -15,7 +15,7 @@ defmodule CloudfrontSigner do
   """
   @spec sign(Distribution.t, binary, list, integer) :: binary
   def sign(%Distribution{domain: domain, private_key: pk, key_pair_id: kpi}, path, query_params \\ [], expiry) do
-    expiry    = Timex.now() |> Timex.shift(seconds: expiry) |> Timex.to_unix()
+    expiry    = Timex.today() |> Timex.to_unix()
     base_url  = URI.merge(domain, path) |> to_string()
     url       = url(base_url, query_params)
     signature = signature(url, expiry, pk)
