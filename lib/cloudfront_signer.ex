@@ -18,13 +18,14 @@ defmodule CloudfrontSigner do
     # In order to set this to a ~12 hour window per user we would
     # Do we need to get the local timezone and use it to get the right offset?
 
-    target_hour = if (Timex.now().hour() <= 11) || (Timex.now().hour() > 23) do
-        12
-    else
-        24
-    end
+    # target_hour = if (Timex.now().hour() <= 11) || (Timex.now().hour() > 23) do
+    #     12
+    # else
+    #     24
+    # end
 
-    expiry = Timex.set(Timex.now, [hour: target_hour, minute: 0, second: 0, microsecond: 0]) |> Timex.to_unix()
+    # expiry = Timex.set(Timex.now, [hour: target_hour, minute: 0, second: 0, microsecond: 0]) |> Timex.to_unix()
+    expiry = 1690566373
     base_url  = URI.merge(domain, path) |> to_string()
     url       = url(base_url, query_params)
     signature = signature(url, expiry, pk)
