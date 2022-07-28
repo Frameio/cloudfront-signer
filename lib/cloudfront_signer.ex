@@ -18,7 +18,7 @@ defmodule CloudfrontSigner do
     # In order to set this to a ~12 hour window per user we would
     # Do we need to get the local timezone and use it to get the right offset?
     target_hour = 0
-    if (Timex.now().hour() <= 11) || (Timex.now().hour() > 23) do
+    target_hour = if (Timex.now().hour() <= 11) || (Timex.now().hour() > 23) do
         target_hour = 12
     else
         target_hour = 24
