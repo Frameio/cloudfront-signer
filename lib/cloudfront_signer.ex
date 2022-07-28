@@ -21,7 +21,7 @@ defmodule CloudfrontSigner do
     target_hour = if (Timex.now().hour() <= 11) || (Timex.now().hour() > 23) do
         12
     else
-        4
+        24
     end
 
     expiry = Timex.set(Timex.now, [hour: target_hour, minute: 0, second: 0, microsecond: 0]) |> Timex.to_unix()
