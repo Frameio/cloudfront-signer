@@ -15,7 +15,15 @@ defmodule CloudfrontSigner do
   """
   @spec sign(Distribution.t, binary, list, integer) :: binary
   def sign(%Distribution{domain: domain, private_key: pk, key_pair_id: kpi}, path, query_params \\ [], expiry) do
-    expiry    = 1672527600
+    # In order to set this to a ~12 hour window per user we would
+    # Do we need to get the local timezone and use it to get the right offset?
+    if (Timex.now().hour() <= 11) || (Timex.now().hour() > 23) do
+        target_hour = 12
+    else
+        target_hour = 24
+    end
+
+    expiry = Timex.set(Timex.now, [hour: target_hour, minute: 0, second: 0, microsecond: 0]) |> Timex.to_unix()
     base_url  = URI.merge(domain, path) |> to_string()
     url       = url(base_url, query_params)
     signature = signature(url, expiry, pk)
